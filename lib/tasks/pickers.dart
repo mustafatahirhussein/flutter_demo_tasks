@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_useful_tasks/widgets/custom_appbar.dart';
 import 'package:flutter_useful_tasks/widgets/custom_formfield.dart';
+import 'package:intl/intl.dart';
 
 class PickersDemo extends StatefulWidget {
   const PickersDemo({Key? key}) : super(key: key);
@@ -47,20 +48,54 @@ class _PickersDemoState extends State<PickersDemo> {
 
   dynamic datePickerDialog(BuildContext context) async {
     var date = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(1980),
-        lastDate: DateTime(2030));
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1980),
+      lastDate: DateTime(2030),
+      initialDatePickerMode: DatePickerMode.day,
+      initialEntryMode: DatePickerEntryMode.calendarOnly,
+      builder: (context, child) {
+        return Theme(
+          data: ThemeData.dark().copyWith(
+            colorScheme: const ColorScheme.dark(
+              primary: Colors.black, // Date indicator
+              onPrimary: Colors.white, // Text Color
+              surface: Colors.black, // Top Color
+              onSurface: Colors.white, // Top Text Color
+            ),
+            dialogBackgroundColor: Colors.blue[800],
+          ),
+          child: child!,
+        );
+      },
+    );
 
     if (date != null) {
+
+      String convertDate = DateFormat.yMd().format(date);
       setState(() {
-        _datePickerController.text = date.toString();
+        _datePickerController.text = convertDate;
       });
     }
   }
 
   dynamic timePickerDialog(BuildContext context) async {
-    var time = await showTimePicker(context: context, initialTime: TimeOfDay.now());
+    var time = await showTimePicker(context: context, initialTime: TimeOfDay.now(),
+      builder: (context, child) {
+        return Theme(
+          data: ThemeData.dark().copyWith(
+            colorScheme: const ColorScheme.dark(
+              primary: Colors.white, // Date indicator
+              onPrimary: Colors.white, // Text Color
+              surface: Colors.black, // Top Color
+              onSurface: Colors.white, // Top Text Color
+            ),
+            dialogBackgroundColor: Colors.blue[800],
+          ),
+          child: child!,
+        );
+      },
+    );
 
     if (time != null) {
       setState(() {

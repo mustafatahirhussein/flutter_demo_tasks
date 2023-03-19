@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_useful_tasks/tasks/dynamic_formfields.dart';
 import 'package:flutter_useful_tasks/tasks/pickers.dart';
 
 void main() {
@@ -11,7 +12,8 @@ class MyApp extends StatelessWidget {
     // TODO: implement build
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: PickersDemo(),
+      //home: PickersDemo(),
+      home: DynamicFormFields(),
     );
   }
 }

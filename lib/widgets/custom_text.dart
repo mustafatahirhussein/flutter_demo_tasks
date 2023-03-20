@@ -6,7 +6,8 @@ class CustomText extends Text {
     String? text,
     Color? color,
     double? fontSize,
-}) : assert(text != null, "Text is required"), super(text!, textAlign: TextAlign.center, style: TextStyle(
+    TextAlign? align,
+}) : assert(text != null, "Text is required"), super(text!, textAlign: align ?? TextAlign.center, style: TextStyle(
     color: color ?? Color(0xffffffff),
     fontSize: fontSize,
   ),);

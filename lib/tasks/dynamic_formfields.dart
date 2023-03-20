@@ -13,6 +13,9 @@ class _DynamicFormFieldsState extends State<DynamicFormFields> {
   int formFieldCount = 0;
   List<Widget> widgetList = [];
 
+  List<Map<String, dynamic>> data = [];
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,24 +33,44 @@ class _DynamicFormFieldsState extends State<DynamicFormFields> {
             color: const Color(0xff000000),
           ),
         ),
-      ) : ListView.builder(
-        shrinkWrap: true,
-        padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-        itemCount: widgetList.length,
-        itemBuilder: (context, i) => buildFormField(i)
+      ) : Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            ListView.builder(
+              shrinkWrap: true,
+              padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+              itemCount: widgetList.length,
+              itemBuilder: (context, i) => buildFormField(i)
+            ),
+
+            ElevatedButton(onPressed: () {
+
+              showModalBottomSheet(context: context, builder: (context) {
+                return ListView(
+                  shrinkWrap: true,
+                  children: data.map((e) => ListTile(
+                    title: CustomText(
+                      text: e['course'].toString().trim(),
+                      color: const Color(0xff000000),
+                      align: TextAlign.start,
+                    ),
+                  )).toList(),
+                );
+              });
+
+            }, child: CustomText(text: "Show",),),
+
+            ElevatedButton(onPressed: () {
+
+              if(_formKey.currentState!.validate()) {
+                debugPrint('done');
+              }
+            }, child: CustomText(text: "Validate",),),
+          ],
+        ),
       ),
 
-      // body: ListView(
-      //   shrinkWrap: true,
-      //   padding: EdgeInsets.symmetric(horizontal: 8,vertical: 8),
-      //   children: [
-      //     CustomText(
-      //       text: "No Courses added",
-      //       fontSize: 30,
-      //       color: Color(0xff000000),
-      //     ),
-      //   ],
-      // ),
       floatingActionButton: FloatingActionButton(
         child: CustomText(text: "ADD NEW",),
         onPressed: () {
@@ -72,8 +95,40 @@ class _DynamicFormFieldsState extends State<DynamicFormFields> {
           border: const OutlineInputBorder(),
           hintText: "Course ${count+1}"
         ),
+        onChanged: (val) => saveValue(count + 1, val),
+        validator: (val) => val!.isEmpty ? 'Required' : null,
       ),
-      trailing: const Icon(Icons.delete, color: Colors.red,),
+      trailing: InkWell(child: const Icon(Icons.delete, color: Colors.red,), onTap: () {
+        setState(() {
+          widgetList.removeAt(count);
+          formFieldCount--;
+
+          /// Remove data from list<map>
+          data.removeAt(count);
+        });
+      },),
     );
+  }
+
+  dynamic saveValue(int index, String value) {
+    bool valueFound = false;
+
+    for (int j = 0; j < data.length; j++) {
+      if (data[j].containsKey("course_id")) {
+        if (data[j]["course_id"] == index) {
+          valueFound = !valueFound;
+          break;
+        }
+      }
+    }
+
+    /// If value is found
+    if (valueFound) {
+      data.removeWhere((e) => e["course_id"] == index);
+    }
+    data.add({
+      'course_id': index,
+      'course': value,
+    });
   }
 }

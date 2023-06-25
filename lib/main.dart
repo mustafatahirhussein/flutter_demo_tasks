@@ -25,7 +25,7 @@ class _MyAppState extends State<MyApp> {
     // TODO: implement build
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/',
+      initialRoute: '/book_listing',
       onGenerateRoute: AppRouting.router.generator,
     );
   }

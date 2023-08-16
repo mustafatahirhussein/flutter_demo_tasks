@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_useful_tasks/extensions/demo_extensions.dart';
 import 'package:flutter_useful_tasks/widgets/custom_appbar.dart';
 import 'package:flutter_useful_tasks/widgets/custom_formfield.dart';
 import 'package:intl/intl.dart';
@@ -50,6 +51,7 @@ class _PickersDemoState extends State<PickersDemo> {
     var date = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
+      locale: Locale('ur'),
       firstDate: DateTime(1980),
       lastDate: DateTime(2030),
       initialDatePickerMode: DatePickerMode.day,
@@ -72,9 +74,8 @@ class _PickersDemoState extends State<PickersDemo> {
 
     if (date != null) {
 
-      String convertDate = DateFormat.yMd().format(date);
       setState(() {
-        _datePickerController.text = convertDate;
+        _datePickerController.text = date.formattedDate;
       });
     }
   }

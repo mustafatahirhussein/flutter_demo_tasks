@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_useful_tasks/fluro/app_routing.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(MyApp());
@@ -24,8 +25,17 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return MaterialApp(
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        Locale('en'),
+        Locale('ur'),
+      ],
       debugShowCheckedModeBanner: false,
-      initialRoute: '/book_listing',
+      initialRoute: '/pickers',
       onGenerateRoute: AppRouting.router.generator,
     );
   }

@@ -7,6 +7,8 @@ import 'package:flutter_useful_tasks/fluro/screens/profile_screen.dart';
 import 'package:flutter_useful_tasks/sqflite/presentation/add_book.dart';
 import 'package:flutter_useful_tasks/sqflite/presentation/book_listing.dart';
 
+import '../tasks/pickers.dart';
+
 class AppRouting {
   static final FluroRouter router = FluroRouter();
 
@@ -16,6 +18,10 @@ class AppRouting {
 
   var dashboardScreen = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) => DashboardScreen(),
+  );
+
+  var pickerHandler = Handler(
+    handlerFunc: (BuildContext? context, Map<String, dynamic> params) => PickersDemo(),
   );
 
   var detailScreen = Handler(
@@ -47,5 +53,6 @@ class AppRouting {
 
     router.define('/book_listing', handler: bookScreen);
     router.define('/add_book', handler: addBookScreen);
+    router.define('/pickers', handler: pickerHandler);
   }
 }
